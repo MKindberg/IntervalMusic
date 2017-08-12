@@ -43,7 +43,8 @@
                 android:id="@+id/btn_work_minus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-" />
+                android:text="-"
+                android:onClick="editWork"/>
 
             <EditText
                 android:id="@+id/et_work"
@@ -58,7 +59,8 @@
                 android:id="@+id/btn_work_plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+" />
+                android:text="+"
+                android:onClick="editWork"/>
 
 
         </LinearLayout>
@@ -89,7 +91,8 @@
                 android:id="@+id/btn_rest_minus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-" />
+                android:text="-"
+                android:onClick="editRest"/>
 
             <EditText
                 android:id="@+id/et_rest"
@@ -98,15 +101,14 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="15"
-                android:textAlignment="center"
-                tools:layout_editor_absoluteX="48dp"
-                tools:layout_editor_absoluteY="176dp" />
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/btn_rest_plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+" />
+                android:text="+"
+                android:onClick="editRest"/>
 
 
         </LinearLayout>
@@ -137,7 +139,8 @@
                 android:id="@+id/btn_rounds_minus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-" />
+                android:text="-"
+                android:onClick="editRounds"/>
 
             <EditText
                 android:id="@+id/et_rounds"
@@ -146,15 +149,14 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="15"
-                android:textAlignment="center"
-                tools:layout_editor_absoluteX="48dp"
-                tools:layout_editor_absoluteY="176dp" />
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/btn_rounds_plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="+" />
+                android:text="+"
+                android:onClick="editRounds"/>
 
 
         </LinearLayout>

@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static android.R.attr.start;
+import static android.os.Build.VERSION_CODES.M;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -77,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
         else
             field.setText(Integer.toString(Integer.parseInt(field.getText().toString())-1));
     }
+    public static final String CMDTOGGLEPAUSE = "togglepause";
+    public static final String CMDPAUSE = "pause";
+    public static final String CMDPREVIOUS = "previous";
+    public static final String CMDNEXT = "next";
+    public static final String SERVICECMD = "com.android.music.musicservicecommand";
+    public static final String CMDNAME = "command";
+    public static final String CMDSTOP = "stop";
 
     public void start(final View v){
         if(mode==MODE_SETUP) {
@@ -165,12 +174,14 @@ public class MainActivity extends AppCompatActivity {
         }
         if(((CheckBox) findViewById(R.id.cb_music)).isChecked()){
             AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-            Intent i = new Intent("com.android.music.musicservicecommand");
+            long eventtime = SystemClock.uptimeMillis();
+
+            KeyEvent upEvent;
             if(start)
-                i.putExtra("command" , "togglepause" );
+                upEvent = new KeyEvent(eventtime, eventtime, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY, 0);
             else
-                i.putExtra("command" , "pause" );
-            this.sendBroadcast(i);
+                upEvent = new KeyEvent(eventtime, eventtime, KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PAUSE, 0);
+            am.dispatchMediaKeyEvent(upEvent);
         }
     }
 }

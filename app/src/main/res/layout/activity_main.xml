@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="mkindberg.intervalmusic.MainActivity">
+    tools:context="mkindberg.intervalmusic.MainActivity"
+    android:id="@+id/backgound">
 
     <TextView
         android:id="@+id/tv_title"
@@ -18,19 +19,28 @@
         android:layout_weight="0.25"
         />
 
+    <TextView
+        android:id="@+id/tv_seconds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="200dp"
+        android:layout_weight="0.75"
+        android:visibility="gone"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:id="@+id/layout_work"
-        android:layout_weight="0.25"
-        >
+        android:layout_weight="0.25">
 
         <TextView
             android:id="@+id/tv_work_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Work"
+            android:text="@string/title_work"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -78,7 +88,7 @@
             android:id="@+id/tv_rest_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rest"
+            android:text="@string/title_rest"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -126,7 +136,7 @@
             android:id="@+id/tv_rounds_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rounds"
+            android:text="@string/title_rounds"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -164,21 +174,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/options">
+
     <CheckBox
+        android:id="@+id/cb_music"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Music"
+        android:text="@string/option_music"
         />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/cb_beep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Beep" />
+        android:text="@string/option_beep" />
     </LinearLayout>
+
     <Button
+        android:id="@+id/btn_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start"/>
+        android:onClick="start"
+        android:text="@string/btn_start" />
 </LinearLayout>

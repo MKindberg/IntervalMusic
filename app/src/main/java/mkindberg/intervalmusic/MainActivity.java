@@ -18,6 +18,7 @@ import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,19 +42,22 @@ public class MainActivity extends AppCompatActivity {
     private int rest;
     private int rounds;
 
+    private ToneGenerator tg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.backgound).setBackgroundColor(Color.CYAN);
+        tg = new ToneGenerator(AudioManager.STREAM_MUSIC, 75);
     }
 
     public void editWork(View v){
         EditText field = (EditText) findViewById(R.id.et_work);
         if(field.getText().length()==0)
             field.setText(0);
-        if(((Button) v).getText().equals("+"))
+        if(v.getId() == R.id.btn_work_plus )
             field.setText(Integer.toString(Integer.parseInt(field.getText().toString())+1));
         else
             field.setText(Integer.toString(Integer.parseInt(field.getText().toString())-1));
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         EditText field = (EditText) findViewById(R.id.et_rest);
         if(field.getText().length()==0)
             field.setText(0);
-        if(((Button) v).getText().equals("+"))
+        if(v.getId() == R.id.btn_rest_plus)
             field.setText(Integer.toString(Integer.parseInt(field.getText().toString())+1));
         else
             field.setText(Integer.toString(Integer.parseInt(field.getText().toString())-1));
@@ -74,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         EditText field = (EditText) findViewById(R.id.et_rounds);
         if(field.getText().length()==0)
             field.setText(0);
-        if(((Button) v).getText().equals("+"))
+        if(v.getId() == R.id.btn_rounds_plus)
             field.setText(Integer.toString(Integer.parseInt(field.getText().toString())+1));
         else
             field.setText(Integer.toString(Integer.parseInt(field.getText().toString())-1));
@@ -113,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tv_seconds).setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.tv_seconds)).setText(Integer.toString(work));
 
+        findViewById(R.id.rounds_left).setVisibility(View.VISIBLE);
+        ((TextView) findViewById(R.id.rounds_left)).setText("Rounds left: "+rounds);
+
         findViewById(R.id.backgound).setBackgroundColor(Color.GREEN);
 
         mode=MODE_TIMER;
@@ -125,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.layout_rounds).setVisibility(View.VISIBLE);
 
         findViewById(R.id.tv_seconds).setVisibility(View.GONE);
+        findViewById(R.id.rounds_left).setVisibility(View.GONE);
 
         findViewById(R.id.backgound).setBackgroundColor(Color.CYAN);
 
@@ -136,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 ((TextView) findViewById(R.id.tv_seconds)).setText(Long.toString((millisUntilFinished+500)/1000));
+                if(((CheckBox) findViewById(R.id.cb_tickbeep)).isChecked() && beepLim>=(millisUntilFinished+500)/1000) {
+                    tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+                    beepLim--;
+                }
             }
 
             @Override
@@ -143,23 +155,31 @@ public class MainActivity extends AppCompatActivity {
                 beep(false);
                 findViewById(R.id.backgound).setBackgroundColor(Color.RED);
                 startRest();
+                beepLim=3;
             }
         };
         cdt.start();
     }
+    int beepLim=3;
     private void startRest(){
-        cdt = new CountDownTimer(rest*1000, 950) {
+        cdt = new CountDownTimer(rest*1000, 475) {
             @Override
             public void onTick(long millisUntilFinished) {
                 ((TextView) findViewById(R.id.tv_seconds)).setText(Long.toString((millisUntilFinished+500)/1000));
+                if(((CheckBox) findViewById(R.id.cb_tickbeep)).isChecked() && beepLim>=(millisUntilFinished+500)/1000) {
+                    tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+                    beepLim--;
+                }
             }
 
             @Override
             public void onFinish() {
                 if(--rounds>0) {
+                    beepLim=3;
                     beep(true);
                     findViewById(R.id.backgound).setBackgroundColor(Color.GREEN);
                     startWork();
+                    ((TextView) findViewById(R.id.rounds_left)).setText("Rounds left: "+rounds);
                 } else
                     toSetupView();
             }
@@ -168,9 +188,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void beep(boolean start){
         if(((CheckBox) findViewById(R.id.cb_beep)).isChecked()){
-            ToneGenerator tg = new ToneGenerator(AudioManager.STREAM_ALARM, 75);
-            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
-            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+            tg.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD);
         }
         if(((CheckBox) findViewById(R.id.cb_music)).isChecked()){
             AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);

@@ -6,4 +6,5 @@
     <string name="title_rounds">Rounds</string>
     <string name="title_rest">Rest</string>
     <string name="title_work">Work</string>
+    <string name="option_tickbeep">Tickbeep</string>
 </resources>
